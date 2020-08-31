@@ -7,6 +7,7 @@ function App() {
   const [prompt, setPrompt] = useState(null);
 
   useEffect(() => {
+    console.log("in use effect");
     window.addEventListener("beforeinstallprompt", e => {
       console.log("before install prompt event");
       // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -19,6 +20,7 @@ function App() {
     <div className="container">
       {/* {prompt != null && <PWAButton {...{ setPrompt, prompt }} />} */}
       <PWAButton {...{ setPrompt, prompt }} />
+      {prompt != null ? "prompt is not null" : "prompt is null"}
       <header className="header">
         <h1>Instagram APP</h1>
       </header>
