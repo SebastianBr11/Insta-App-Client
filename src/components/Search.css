@@ -1,0 +1,36 @@
+.search {
+  padding: 0.3rem 0.4rem;
+  font-size: 2rem;
+  border: none;
+  background: #eee;
+  border: 2px solid #999;
+  border-radius: 5px;
+}
+
+.search-container {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.searches {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-content: center;
+  place-items: center;
+  row-gap: 20px;
+}
+
+.spinner-box {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  margin: 20px 0;
+}
