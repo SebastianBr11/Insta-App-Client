@@ -14,4 +14,8 @@ const fetchUserData = async uid => {
   return data;
 };
 
-export default { fetchResults, fetchUserData };
+const capitalize = text => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+export default { fetchResults, fetchUserData, capitalize };

@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import Spinner from "./Spinner";
 import "./SearchBox.css";
 import Util from "../util/util";
 import UserDesc from "./UserDesc";
+import { usePersistedState } from "../util/hooks";
 
 const SearchBox = ({ data: { url, title, src } }) => {
-  const [showMore, setShowMore] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState({});
+  const [showMore, setShowMore] = usePersistedState(
+    "searchBoxShowMore" + Util.capitalize(title),
+    false
+  );
+  const [isLoaded, setIsLoaded] = usePersistedState(
+    "searchBoxIsLoaded" + Util.capitalize(title),
+    false
+  );
+  const [isLoading, setIsLoading] = usePersistedState(
+    "searchBoxIsLoading" + Util.capitalize(title),
+    false
+  );
+  const [data, setData] = usePersistedState(
+    "searchBoxData" + Util.capitalize(title),
+    {}
+  );
 
-  const onClick = async () => {
+  const onClick = async e => {
     setShowMore(!showMore);
-    if (!isLoaded) {
+    if (!isLoaded && !isLoading) {
       setIsLoading(true);
-      const newData = await Util.fetchUserData(title);
-      setIsLoaded(true);
+      const newData = await Util.fetchUserData(title).catch(e =>
+        console.log(e)
+      );
+      if (!newData) {
+        setIsLoaded(false);
+      } else {
+        setIsLoaded(true);
+      }
       setIsLoading(false);
       setData(newData);
     }

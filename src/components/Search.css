@@ -13,7 +13,9 @@
 .search-container {
   margin-top: 40px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: stretch;
 }
 
 .form {
@@ -28,7 +30,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   place-content: center;
-  place-items: center;
   row-gap: 20px;
 }
 

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Search from "./components/Search";
 import PWAButton from "./components/PWAButton";
+import { useFocus } from "./util/hooks";
 
 function App() {
   const [prompt, setPrompt] = useState(null);
+  const [inputRef, setFocus] = useFocus();
 
   useEffect(() => {
     console.log("in use effect");
@@ -15,17 +17,39 @@ function App() {
       // Stash the event so it can be triggered later.
       setPrompt(e);
     });
+
+    var keys;
+
+    document.addEventListener(
+      "keydown",
+      function (e) {
+        keys = keys || [];
+        keys[e.keyCode] = true;
+
+        if (keys[17] && keys[16] && keys[70]) {
+          console.log("sucessfull");
+          setFocus();
+        }
+      },
+      false
+    );
+
+    document.addEventListener(
+      "keyup",
+      function (e) {
+        keys[e.keyCode] = false;
+      },
+      false
+    );
   });
   return (
     <div className="container">
-      {/* {prompt != null && <PWAButton {...{ setPrompt, prompt }} />} */}
-      <PWAButton {...{ setPrompt, prompt }} />
-      {prompt != null ? "prompt is not null" : "prompt is null"}
+      {prompt != null && <PWAButton {...{ setPrompt, prompt }} />}
       <header className="header">
         <h1>Instagram APP</h1>
       </header>
       <div className="body">
-        <Search />
+        <Search refe={inputRef} />
       </div>
     </div>
   );
