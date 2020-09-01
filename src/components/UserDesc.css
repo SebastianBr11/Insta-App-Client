@@ -1,0 +1,46 @@
+.user-desc {
+  align-self: center;
+  text-align: center;
+}
+
+.desc {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 0.95;
+}
+
+.name {
+  font-size: 25px;
+  line-height: 0.9;
+}
+
+.user-desc h2 + h3 {
+  margin-top: 2px;
+}
+
+.user-desc h2 + a,
+.user-desc h3 + a {
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.user-desc h3 + h4 {
+  margin-top: 5px;
+}
+
+.user-desc a + h4 {
+  margin-top: 4px;
+}
+
+.followers,
+.following {
+  font-weight: 400;
+  color: #111111;
+  font-size: 16px;
+}
+
+.followers span,
+.following span {
+  font-weight: 600;
+  color: #0e0e0e;
+}

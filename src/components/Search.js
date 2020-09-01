@@ -33,7 +33,7 @@ const Search = () => {
         />
         {isLoading && (
           <div className="spinner-box">
-            <Spinner />
+            <Spinner size="md" />
           </div>
         )}
         {!isLoading && (

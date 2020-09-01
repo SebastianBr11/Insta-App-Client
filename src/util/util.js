@@ -7,4 +7,11 @@ const fetchResults = async query => {
   return data;
 };
 
-export default { fetchResults };
+const fetchUserData = async uid => {
+  const req = await axios.get("/api/user/" + uid);
+  const data = await req.data;
+  console.log(data);
+  return data;
+};
+
+export default { fetchResults, fetchUserData };
