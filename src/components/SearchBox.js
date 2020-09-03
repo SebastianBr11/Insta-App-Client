@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Spinner from "./Spinner";
 import "./SearchBox.css";
 import Util from "../util/util";
@@ -20,25 +20,33 @@ const SearchBox = ({ data: { url, title, src } }) => {
   );
   const [data, setData] = usePersistedState(
     "searchBoxData" + Util.capitalize(title),
-    {}
+    null
   );
 
   const onClick = async e => {
     setShowMore(!showMore);
-    if (!isLoaded && !isLoading) {
+    console.log(isLoaded);
+    if (!isLoaded) {
       setIsLoading(true);
-      const newData = await Util.fetchUserData(title).catch(e =>
-        console.log(e)
-      );
-      if (!newData) {
-        setIsLoaded(false);
-      } else {
-        setIsLoaded(true);
-      }
-      setIsLoading(false);
-      setData(newData);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      if (!isLoaded && isLoading) {
+        const newData = await Util.fetchUserData(title).catch(e =>
+          console.log(e)
+        );
+        if (!newData) {
+          setIsLoaded(false);
+        } else {
+          setIsLoaded(true);
+        }
+        setIsLoading(false);
+        setData(newData);
+      }
+    })();
+  }, [isLoaded, isLoading, setData, setIsLoaded, setIsLoading, title]);
 
   return (
     <div className="search-box-div">
@@ -70,7 +78,11 @@ const SearchBox = ({ data: { url, title, src } }) => {
             Show {showMore ? "Less" : "More"}
           </button>
           {showMore &&
-            (isLoading ? <Spinner size="sm" /> : <UserDesc user={data} />)}
+            (isLoading && !data ? (
+              <Spinner size="sm" />
+            ) : (
+              data && <UserDesc user={data} />
+            ))}
         </>
       )}
     </div>

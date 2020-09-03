@@ -14,8 +14,19 @@ const fetchUserData = async uid => {
   return data;
 };
 
+const tryLogin = async login => {
+  const req = await axios.get("/api/login", {
+    headers: {
+      login: JSON.stringify(login),
+    },
+  });
+  const data = await req.data;
+  console.log(data);
+  return data;
+};
+
 const capitalize = text => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
-export default { fetchResults, fetchUserData, capitalize };
+export default { fetchResults, fetchUserData, tryLogin, capitalize };

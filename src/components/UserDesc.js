@@ -1,7 +1,7 @@
 import React from "react";
 import "./UserDesc.css";
 
-const UserDesc = ({ user = { desc: "" } }) => {
+const UserDesc = ({ user }) => {
   const { desc, followers, following, link, linkText, name, posts } = user;
   return (
     <div className="user-desc">

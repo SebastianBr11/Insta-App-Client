@@ -29,3 +29,36 @@ export const usePersistedState = (keyToPersistWith, defaultState) => {
   );
   return [state, setPersistedValue];
 };
+
+export const useMultipleKeys = func => {
+  useEffect(() => {
+    var keys = [];
+
+    const keydownList = document.addEventListener(
+      "keydown",
+      function (e) {
+        keys = keys || [];
+        keys[e.keyCode] = true;
+
+        if (keys[17] && keys[16] && keys[70]) {
+          console.log("sucessfull");
+          func();
+        }
+      },
+      false
+    );
+
+    const keyupList = document.addEventListener(
+      "keyup",
+      function (e) {
+        keys[e.keyCode] = false;
+      },
+      false
+    );
+
+    return () => {
+      document.removeEventListener("keyup", keyupList);
+      document.removeEventListener("keydown", keydownList);
+    };
+  });
+};
