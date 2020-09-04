@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { set, get } from "idb-keyval";
+import Util from "./util";
 
 export const useFocus = () => {
   const htmlElRef = useRef(null);
@@ -61,4 +62,51 @@ export const useMultipleKeys = func => {
       document.removeEventListener("keydown", keydownList);
     };
   });
+};
+
+export const useLogin = (
+  isLoading,
+  isLoggedIn,
+  username,
+  password,
+  setIsLoggedIn,
+  setIsLoading,
+  setError,
+  uid
+) => {
+  useEffect(() => {
+    (async () => {
+      if (isLoading && !isLoggedIn) {
+        if (password.length < 6) {
+          setError("the password is too short");
+          setIsLoading(false);
+          return;
+        }
+        try {
+          await Util.tryLogin(uid, { username, password });
+          setIsLoggedIn(true);
+        } catch (e) {
+          setError("wrong username or password");
+        }
+        setIsLoading(false);
+      }
+    })();
+  }, [
+    isLoading,
+    isLoggedIn,
+    username,
+    password,
+    setIsLoggedIn,
+    setError,
+    setIsLoading,
+    uid,
+  ]);
+
+  const onLogin = e => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+  };
+
+  return [onLogin];
 };

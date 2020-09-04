@@ -4,7 +4,12 @@ import { set, get } from "idb-keyval";
 import "./App.css";
 import Search from "./components/Search";
 import PWAButton from "./components/PWAButton";
-import { useFocus, useMultipleKeys, usePersistedState } from "./util/hooks";
+import {
+  useFocus,
+  useMultipleKeys,
+  usePersistedState,
+  useLogin,
+} from "./util/hooks";
 import Util from "./util/util";
 import LoginForm from "./components/LoginForm";
 
@@ -17,6 +22,16 @@ function App() {
   const [password, setPassword] = usePersistedState("password", "");
   const [error, setError] = useState(null);
   const [uid, setUid] = useState(null);
+  const [onLogin] = useLogin(
+    isLoading,
+    isLoggedIn,
+    username,
+    password,
+    setIsLoggedIn,
+    setIsLoading,
+    setError,
+    uid
+  );
 
   useMultipleKeys(setFocus);
 
@@ -49,12 +64,6 @@ function App() {
     };
   }, []);
 
-  const onLogin = e => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-  };
-
   const onLogout = async () => {
     console.log("logging out");
     await Util.logout(uid);
@@ -62,24 +71,6 @@ function App() {
     console.log("is logged in: " + isLoggedIn);
   };
 
-  useEffect(() => {
-    (async () => {
-      if (isLoading && !isLoggedIn) {
-        if (password.length < 6) {
-          setError("the password is too short");
-          setIsLoading(false);
-          return;
-        }
-        try {
-          await Util.tryLogin(uid, { username, password });
-          setIsLoggedIn(true);
-        } catch (e) {
-          setError("wrong username or password");
-        }
-        setIsLoading(false);
-      }
-    })();
-  }, [isLoading, isLoggedIn, username, password, setIsLoggedIn, uid]);
   return isLoggedIn ? (
     <div className="container">
       <button className="logout-button" onClick={onLogout}>
