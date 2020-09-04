@@ -20,6 +20,21 @@
   padding: 20px 0;
 }
 
+.logout-button {
+  outline: none;
+  border: 2px solid #888;
+  border-radius: 20px;
+  background: transparent;
+  padding: 0.8rem 1rem;
+  font-size: 1.2rem;
+}
+
+.logout-button:focus {
+  outline: none;
+  border: 2px solid #000;
+  background: #e7e7e7;
+}
+
 @media (max-width: 700px) {
   .header {
     font-size: 1.3rem;

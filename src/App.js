@@ -82,7 +82,9 @@ function App() {
   }, [isLoading, isLoggedIn, username, password, setIsLoggedIn, uid]);
   return isLoggedIn ? (
     <div className="container">
-      <button onClick={onLogout}>logout</button>
+      <button className="logout-button" onClick={onLogout}>
+        Logout
+      </button>
       <header className="header">
         <h1>Instagram APP</h1>
       </header>
