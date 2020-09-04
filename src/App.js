@@ -16,13 +16,15 @@ function App() {
   const [username, setUsername] = usePersistedState("username", "");
   const [password, setPassword] = usePersistedState("password", "");
   const [error, setError] = useState(null);
-  const [uid, setUid] = useState(uuidv4());
+  const [uid, setUid] = useState(null);
 
   useMultipleKeys(setFocus);
 
   useEffect(() => {
     (async () => {
-      await get("uid").then(retrievedState => setUid(retrievedState ?? null));
+      await get("uid").then(retrievedState =>
+        setUid(retrievedState ?? uuidv4() ?? null)
+      );
     })();
   }, []);
 
