@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { set, get } from "idb-keyval";
 import "./App.css";
 import Search from "./components/Search";
 import PWAButton from "./components/PWAButton";
@@ -9,6 +7,7 @@ import {
   useMultipleKeys,
   usePersistedState,
   useLogin,
+  useUUID,
 } from "./util/hooks";
 import Util from "./util/util";
 import LoginForm from "./components/LoginForm";
@@ -21,7 +20,7 @@ function App() {
   const [username, setUsername] = usePersistedState("username", "");
   const [password, setPassword] = usePersistedState("password", "");
   const [error, setError] = useState(null);
-  const [uid, setUid] = useState(null);
+  const [uid] = useUUID();
   const [onLogin] = useLogin(
     isLoading,
     isLoggedIn,
@@ -34,20 +33,6 @@ function App() {
   );
 
   useMultipleKeys(setFocus);
-
-  useEffect(() => {
-    (async () => {
-      await get("uid").then(retrievedState =>
-        setUid(retrievedState ?? uuidv4() ?? null)
-      );
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      await set("uid", uid);
-    })();
-  }, [uid]);
 
   useEffect(() => {
     console.log("in use effect");

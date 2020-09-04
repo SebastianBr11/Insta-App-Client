@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { set, get } from "idb-keyval";
+import { v4 as uuidv4 } from "uuid";
 import Util from "./util";
 
 export const useFocus = () => {
@@ -109,4 +110,24 @@ export const useLogin = (
   };
 
   return [onLogin];
+};
+
+export const useUUID = () => {
+  const [uid, setUid] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      await get("uid").then(retrievedState =>
+        setUid(retrievedState ?? uuidv4() ?? null)
+      );
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await set("uid", uid);
+    })();
+  }, [uid]);
+
+  return [uid];
 };
