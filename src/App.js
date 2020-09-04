@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { set, get } from "idb-keyval";
 import "./App.css";
 import Search from "./components/Search";
 import PWAButton from "./components/PWAButton";
 import { useFocus, useMultipleKeys, usePersistedState } from "./util/hooks";
 import Util from "./util/util";
-import Spinner from "./components/Spinner";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   const [prompt, setPrompt] = useState(null);
@@ -14,24 +16,48 @@ function App() {
   const [username, setUsername] = usePersistedState("username", "");
   const [password, setPassword] = usePersistedState("password", "");
   const [error, setError] = useState(null);
+  const [uid, setUid] = useState(uuidv4());
 
   useMultipleKeys(setFocus);
 
   useEffect(() => {
+    (async () => {
+      await get("uid").then(retrievedState => setUid(retrievedState ?? null));
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await set("uid", uid);
+    })();
+  }, [uid]);
+
+  useEffect(() => {
     console.log("in use effect");
-    window.addEventListener("beforeinstallprompt", e => {
+    const listener = window.addEventListener("beforeinstallprompt", e => {
       console.log("before install prompt event");
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
       // Stash the event so it can be triggered later.
       setPrompt(e);
     });
-  });
+
+    return () => {
+      document.removeEventListener("beforeinstallprompt", listener);
+    };
+  }, []);
 
   const onLogin = e => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+  };
+
+  const onLogout = async () => {
+    console.log("logging out");
+    await Util.logout(uid);
+    setIsLoggedIn(false);
+    console.log("is logged in: " + isLoggedIn);
   };
 
   useEffect(() => {
@@ -43,7 +69,7 @@ function App() {
           return;
         }
         try {
-          await Util.tryLogin({ username, password });
+          await Util.tryLogin(uid, { username, password });
           setIsLoggedIn(true);
         } catch (e) {
           setError("wrong username or password");
@@ -51,37 +77,30 @@ function App() {
         setIsLoading(false);
       }
     })();
-  }, [isLoading, isLoggedIn, username, password, setIsLoggedIn]);
+  }, [isLoading, isLoggedIn, username, password, setIsLoggedIn, uid]);
   return isLoggedIn ? (
     <div className="container">
-      {prompt != null && <PWAButton {...{ setPrompt, prompt }} />}
+      <button onClick={onLogout}>logout</button>
       <header className="header">
         <h1>Instagram APP</h1>
       </header>
       <div className="body">
-        <Search refe={inputRef} />
+        <Search uid={uid} refe={inputRef} />
       </div>
+      {prompt != null && <PWAButton {...{ setPrompt, prompt }} />}
     </div>
   ) : (
-    <>
-      <form>
-        <input
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button onClick={onLogin} type="submit">
-          login
-        </button>
-      </form>
-      {error && <h1>{error}</h1>}
-      {isLoading && <Spinner size="md" />}
-    </>
+    <LoginForm
+      {...{
+        username,
+        setUsername,
+        password,
+        setPassword,
+        onLogin,
+        error,
+        isLoading,
+      }}
+    />
   );
 }
 

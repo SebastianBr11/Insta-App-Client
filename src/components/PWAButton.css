@@ -1,8 +1,13 @@
 .pwa-button {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  border: none;
-  border: 1px solid #333;
-  padding: 5px 2px;
+  position: sticky;
+  bottom: 25px;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 900;
+  background: #95ffbe;
+  border: 2px solid #33333355;
+  padding: 10px 20px;
+  color: #111111cc;
+  z-index: 20;
+  cursor: pointer;
 }

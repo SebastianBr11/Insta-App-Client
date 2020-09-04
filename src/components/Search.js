@@ -8,7 +8,7 @@ import { usePersistedState } from "../util/hooks";
 const defaultPic =
   "https://instagram.fpen1-1.fna.fbcdn.net/v/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=instagram.fpen1-1.fna.fbcdn.net&_nc_ohc=TxAf-mrbVlQAX8xfQQk&oh=57d6526472161a4fcb6925971c1add81&oe=5F5ED20F&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.2";
 
-const Search = ({ refe }) => {
+const Search = ({ uid, refe }) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = usePersistedState("searchData", [
@@ -26,7 +26,7 @@ const Search = ({ refe }) => {
     (async () => {
       if (isLoading) {
         try {
-          const newData = await Util.fetchResults(query);
+          const newData = await Util.fetchResults(uid, query);
           setData(newData.results);
         } catch (e) {
           setError("an error ocurred");
@@ -34,7 +34,7 @@ const Search = ({ refe }) => {
         setIsLoading(false);
       }
     })();
-  }, [isLoading, query, setData]);
+  }, [isLoading, query, setData, uid]);
 
   return (
     <div className="search-container">
@@ -42,6 +42,7 @@ const Search = ({ refe }) => {
         <input
           ref={refe}
           autoFocus
+          placeholder="Search..."
           className="search"
           value={query}
           onChange={e => setQuery(e.target.value)}
@@ -56,7 +57,7 @@ const Search = ({ refe }) => {
         ) : (
           <div className="searches">
             {data?.map(item => (
-              <SearchBox key={item.url} data={item} />
+              <SearchBox uid={uid} key={item.url} data={item} />
             ))}
           </div>
         )}

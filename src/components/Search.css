@@ -10,8 +10,11 @@
   z-index: 20;
 }
 
+.search::placeholder {
+  font-size: 1.6rem;
+}
+
 .search-container {
-  margin-top: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,7 +31,7 @@
 .searches {
   margin-top: 15px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   place-content: center;
   row-gap: 20px;
 }

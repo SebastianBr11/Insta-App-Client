@@ -5,7 +5,7 @@ import Util from "../util/util";
 import UserDesc from "./UserDesc";
 import { usePersistedState } from "../util/hooks";
 
-const SearchBox = ({ data: { url, title, src } }) => {
+const SearchBox = ({ uid, data: { url, title, src } }) => {
   const [showMore, setShowMore] = usePersistedState(
     "searchBoxShowMore" + Util.capitalize(title),
     false
@@ -34,7 +34,7 @@ const SearchBox = ({ data: { url, title, src } }) => {
   useEffect(() => {
     (async () => {
       if (!isLoaded && isLoading) {
-        const newData = await Util.fetchUserData(title).catch(e =>
+        const newData = await Util.fetchUserData(uid, title).catch(e =>
           console.log(e)
         );
         if (!newData) {
@@ -46,7 +46,7 @@ const SearchBox = ({ data: { url, title, src } }) => {
         setData(newData);
       }
     })();
-  }, [isLoaded, isLoading, setData, setIsLoaded, setIsLoading, title]);
+  }, [isLoaded, isLoading, setData, setIsLoaded, setIsLoading, title, uid]);
 
   return (
     <div className="search-box-div">

@@ -35,6 +35,7 @@
 
 .search-box-div {
   display: flex;
+  word-break: break-word;
   flex-direction: column;
   align-items: center;
   background: #fff;
