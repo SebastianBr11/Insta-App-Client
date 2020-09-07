@@ -25,8 +25,15 @@
   border: 2px solid #888;
   border-radius: 20px;
   background: transparent;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1.2rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.1s ease-in-out;
+}
+
+.logout-button:hover {
+  background: #eee;
 }
 
 .logout-button:focus {
