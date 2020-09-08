@@ -1,23 +1,11 @@
 import React from "react";
+import UserImage from "./UserImage";
+import "./UserImages.css";
 
 const UserImages = ({ images }) => {
   return (
-    <div>
-      {images &&
-        images.map(img => (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={img.href}
-            key={img.href}
-          >
-            <img
-              style={{ width: "100%", maxWidth: "300px" }}
-              alt={img.alt}
-              srcSet={img.srcSet}
-            />
-          </a>
-        ))}
+    <div className="user-images">
+      {images && images.map(img => <UserImage img={img} />)}
     </div>
   );
 };

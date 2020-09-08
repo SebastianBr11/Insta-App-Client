@@ -27,9 +27,7 @@ const UserDesc = ({ user }) => {
       <h4 className="posts">
         <span>{posts}</span> posts
       </h4>
-      <div className="user-images">
-        <UserImages images={images} />
-      </div>
+      <UserImages images={images} />
     </div>
   );
 };
