@@ -60,8 +60,9 @@ const SearchBox = ({
     }
     if (isModalOpen) {
       setShowMore(true);
+      //setTimeout(() => setIsModalOpen(false), 5000);
     }
-  }, [isModalOpen, setShowMore]);
+  }, [isModalOpen, setShowMore, setIsModalOpen]);
 
   return (
     <div className="search-box-div">

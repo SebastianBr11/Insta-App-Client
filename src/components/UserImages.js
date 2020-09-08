@@ -12,7 +12,7 @@ const UserImages = ({ images }) => {
             key={img.href}
           >
             <img
-              style={{ height: "100px" }}
+              style={{ width: "100%", maxWidth: "300px" }}
               alt={img.alt}
               srcSet={img.srcSet}
             />
