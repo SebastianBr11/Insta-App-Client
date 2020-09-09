@@ -3,11 +3,11 @@ import UserImage from "./UserImage";
 import "./UserImages.css";
 
 const UserImages = ({ images }) => {
-  return (
+  return images ? (
     <div className="user-images">
-      {images && images.map(img => <UserImage img={img} />)}
+      {images && images.map(img => <UserImage key={img.href} img={img} />)}
     </div>
-  );
+  ) : null;
 };
 
 export default UserImages;

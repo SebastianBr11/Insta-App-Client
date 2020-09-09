@@ -2,7 +2,7 @@ import React from "react";
 import "./UserDesc.css";
 import UserImages from "./UserImages";
 
-const UserDesc = ({ user }) => {
+const UserDesc = ({ data, setIsOpen }) => {
   const {
     desc,
     followers,
@@ -12,7 +12,14 @@ const UserDesc = ({ user }) => {
     name,
     posts,
     images,
-  } = user;
+  } = data?.user;
+
+  const onClick = () => {
+    data.setIsLoaded(false);
+    data.setIsLoading(true);
+    data.onClick();
+    setIsOpen(false);
+  };
   return (
     <div className="user-desc">
       <h2 className="name">{name}</h2>
@@ -27,6 +34,7 @@ const UserDesc = ({ user }) => {
       <h4 className="posts">
         <span>{posts}</span> posts
       </h4>
+      <button onClick={onClick}>Reload</button>
       <UserImages images={images} />
     </div>
   );

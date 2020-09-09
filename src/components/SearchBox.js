@@ -26,11 +26,17 @@ const SearchBox = ({
   );
 
   const onClick = async e => {
-    setShowMore(!showMore);
     if (!showMore && !isLoading && isLoaded) {
       !isModalOpen && setIsModalOpen(true);
     }
-    if (data) setModalData(data);
+    if (data)
+      setModalData({
+        user: data,
+        onClick,
+        setIsLoaded,
+        setIsLoading,
+        setShowMore,
+      });
     console.log(isLoaded);
     if (!isLoaded) {
       setIsLoading(true);
@@ -40,6 +46,7 @@ const SearchBox = ({
   useEffect(() => {
     (async () => {
       if (!isLoaded && isLoading) {
+        setShowMore(true);
         const newData = await Util.fetchUserData(uid, title).catch(e =>
           console.log(e)
         );
@@ -50,6 +57,7 @@ const SearchBox = ({
         }
         setIsLoading(false);
         setData(newData);
+        setShowMore(false);
       }
     })();
   }, [isLoaded, isLoading, setData, setIsLoaded, setIsLoading, title, uid]);
@@ -90,10 +98,15 @@ const SearchBox = ({
       </a>
       {!url.includes("explore") && (
         <>
-          <button onClick={onClick} type="button" className="show-more">
-            {isLoaded ? "Show More" : "Load Data"}
+          <button
+            disabled={isLoading}
+            onClick={onClick}
+            type="button"
+            className="show-more"
+          >
+            {isLoaded ? "Show More" : !isLoading ? "Load Data" : "Loading..."}
           </button>
-          {showMore && isLoading && !data && <Spinner size="sm" />}
+          {isLoading && <Spinner size="sm" />}
         </>
       )}
     </div>
