@@ -1,5 +1,6 @@
 import React from "react";
 import UserDesc from "./UserDesc";
+import CloseIcon from "./CloseIcon";
 import "./Modal.css";
 
 const Modal = ({ data, isOpen, setIsOpen }) => {
@@ -9,7 +10,7 @@ const Modal = ({ data, isOpen, setIsOpen }) => {
         <div onClick={e => e.stopPropagation()} className="modal-content">
           <UserDesc user={data} />
           <div onClick={() => setIsOpen(false)} className="modal-close">
-            Close Modal
+            <CloseIcon height="24px" width="24px" fillColor="white" />
           </div>
         </div>
       </div>

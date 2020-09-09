@@ -6,15 +6,8 @@
   font-weight: 900;
   background: #95ffbe;
   border: 2px solid #33333355;
-  padding: 22px 20px;
-  border: none;
+  padding: 10px 20px;
   color: #111111cc;
   z-index: 20;
   cursor: pointer;
-  clip-path: circle(11% at 0% 50%);
-  transition: clip-path 0.3s ease-in-out;
-}
-
-.pwa-button:hover {
-  clip-path: circle(100%);
 }

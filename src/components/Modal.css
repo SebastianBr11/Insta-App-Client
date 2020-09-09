@@ -20,33 +20,21 @@
   overflow: auto;
   flex: 0 1 800px;
   border-radius: 20px;
-  min-height: fit-content;
+  height: fit-content;
   max-height: 100%;
 }
 
 .modal-close {
   cursor: pointer;
-  font-size: 1.5rem;
-  text-align: center;
-  color: white;
-  padding: 0.5rem 0.8rem;
-  position: absolute;
-  left: -1000px;
-  top: 0;
-}
-
-.modal-close::before {
   position: fixed;
-  top: 5px;
   left: 5px;
-  font-size: 2rem;
-  color: black;
+  top: 5px;
+  box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  content: "\00d7";
   border-radius: 50%;
   height: 35px;
   width: 35px;
-  box-shadow: inset 0px 0px 10px rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.8);
 }
