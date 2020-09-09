@@ -7,3 +7,14 @@
 .posts + .user-images {
   margin-top: 10px;
 }
+
+.user-images a {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@media (max-width: 400px) {
+  .user-images {
+    grid-template-columns: 1fr;
+  }
+}
