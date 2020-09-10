@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserDesc from "./UserDesc";
 import CloseIcon from "./CloseIcon";
 import "./Modal.css";
 
 const Modal = ({ data, isOpen, setIsOpen }) => {
+  useEffect(() => {
+    if (isOpen && data) {
+      console.log(data);
+      document.title = data.user.uid + " - React App";
+    } else {
+      document.title = "React App";
+    }
+  }, [isOpen, data]);
   return (
     isOpen && (
       <div onClick={() => setIsOpen(false)} className="modal">
