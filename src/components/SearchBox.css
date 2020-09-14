@@ -44,6 +44,10 @@
   min-width: 190px;
 }
 
+.show-more + .spinner {
+  margin-top: 10px;
+}
+
 .show-more {
   margin-top: 10px;
   cursor: pointer;
@@ -54,7 +58,6 @@
   border-radius: 5px;
   color: #222;
   font-size: 15px;
-  margin-bottom: 10px;
   transition: all 0.3s ease-in-out;
 }
 
