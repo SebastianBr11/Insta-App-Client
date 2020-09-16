@@ -1,41 +1,155 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Spinner from "./Spinner";
+import Util from "../util/util";
+import { usePersistedState } from "../util/hooks";
 import "./UserDesc.css";
 import UserImages from "./UserImages";
+import Followers from "./Followers";
 
-const UserDesc = ({ data, setIsOpen }) => {
+const UserDesc = ({ data, setIsOpen, uid }) => {
   const {
     desc,
-    followers,
-    following,
+    followers: followersNum,
+    following: followingNum,
     link,
     linkText,
     name,
     posts,
     images,
     followedBy,
+    uid: userId,
   } = data?.user;
 
-  const onClick = () => {
+  const [followers, setFollowers] = usePersistedState(
+    "followers" + Util.capitalize(userId),
+    null
+  );
+  const [showFollowers, setShowFollowers] = usePersistedState(
+    "showFollowers" + Util.capitalize(userId),
+    false
+  );
+  const [followersLoading, setFollowersLoading] = usePersistedState(
+    "followersLoading" + Util.capitalize(userId),
+    false
+  );
+  const [followersLoaded, setFollowersLoaded] = usePersistedState(
+    "followersLoaded" + Util.capitalize(userId),
+    false
+  );
+
+  const [following, setFollowing] = usePersistedState(
+    "following" + Util.capitalize(userId),
+    null
+  );
+  const [showFollowing, setShowFollowing] = usePersistedState(
+    "showFollowing" + Util.capitalize(userId),
+    false
+  );
+  const [followingLoading, setFollowingLoading] = usePersistedState(
+    "followingLoading" + Util.capitalize(userId),
+    false
+  );
+  const [followingLoaded, setFollowingLoaded] = usePersistedState(
+    "followingLoaded" + Util.capitalize(userId),
+    false
+  );
+
+  const onReloadClick = () => {
     data.setIsLoaded(false);
     data.setIsLoading(true);
     data.onClick();
     setIsOpen(false);
   };
+
+  const toggleFollowers = () => {
+    setShowFollowers(!showFollowers);
+    if (!followersLoaded) {
+      setFollowersLoading(true);
+    }
+  };
+
+  const toggleFollowing = () => {
+    setShowFollowing(!showFollowing);
+    if (!followingLoaded) setFollowingLoading(true);
+  };
+
+  useEffect(() => {
+    if (followersLoading && !followersLoaded) {
+      Util.fetchFollowers(uid, userId, 20)
+        .then(newFollowers => {
+          setFollowersLoaded(!!newFollowers);
+          setFollowersLoading(false);
+          setFollowers(newFollowers);
+        })
+        .catch(e => console.log(e));
+    }
+  }, [
+    followersLoading,
+    followersLoaded,
+    setFollowersLoaded,
+    setFollowersLoading,
+    setFollowers,
+    userId,
+    uid,
+  ]);
+
+  useEffect(() => {
+    if (followingLoading && !followingLoaded) {
+      console.log("fetching again");
+      Util.fetchFollowing(uid, userId, 20)
+        .then(newFollowing => {
+          if (!newFollowing) {
+            setFollowingLoaded(false);
+          } else {
+            setFollowingLoaded(true);
+          }
+          setFollowingLoading(false);
+          setFollowing(newFollowing);
+        })
+        .catch(e => console.log(e));
+    }
+  }, [
+    followingLoaded,
+    followingLoading,
+    setFollowing,
+    setFollowingLoaded,
+    setFollowingLoading,
+    uid,
+    userId,
+  ]);
   return (
     <div className="user-desc">
       {name && <h2 className="name">{name}</h2>}
       {desc && <h3 className="desc">{desc}</h3>}
       {link && <a href={link}>{linkText}</a>}
-      {followers && (
+      {followersNum && (
         <h4 className="followers">
-          <span>{followers}</span>{" "}
-          {followers !== "1" ? "followers" : "follower"}
+          <span className="bold">{followersNum}</span>{" "}
+          <span onClick={toggleFollowers}>
+            {followersNum !== "1" ? "followers" : "follower"}
+          </span>
+          {showFollowers &&
+            followers?.followers &&
+            (!followersLoading ? (
+              <Followers followers={followers.followers} />
+            ) : (
+              <Spinner size="sm" />
+            ))}
         </h4>
       )}
-      {following && (
+      {followingNum && (
         <h4 className="following">
-          following <span>{following}</span>{" "}
-          {following !== "1" ? "users" : "user"}
+          following <span className="bold">{followingNum}</span>{" "}
+          <span onClick={toggleFollowing}>
+            {followingNum !== "1" ? "users" : "user"}
+          </span>
+          {showFollowing &&
+            following?.following &&
+            (!followingLoading ? (
+              <Followers followers={following.following} />
+            ) : (
+              <Spinner size="sm" />
+            ))}
         </h4>
       )}
       {posts && (
@@ -44,7 +158,7 @@ const UserDesc = ({ data, setIsOpen }) => {
         </h4>
       )}
       {followedBy && <h4 className="followed-by">{followedBy}</h4>}
-      <button className="reload-button" onClick={onClick}>
+      <button className="reload-button" onClick={onReloadClick}>
         Reload
       </button>
       {images && <UserImages images={images} />}

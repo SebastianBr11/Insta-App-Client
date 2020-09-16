@@ -76,6 +76,7 @@ const Search = ({ uid, refe }) => {
         data={modalData}
         setIsOpen={setIsModalOpen}
         isOpen={isModalOpen}
+        uid={uid}
       ></Modal>
     </div>
   );

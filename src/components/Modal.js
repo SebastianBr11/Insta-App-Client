@@ -3,7 +3,7 @@ import UserDesc from "./UserDesc";
 import CloseIcon from "./CloseIcon";
 import "./Modal.css";
 
-const Modal = ({ data, isOpen, setIsOpen }) => {
+const Modal = ({ data, isOpen, setIsOpen, uid }) => {
   const [title] = useState(document.title);
   useEffect(() => {
     if (isOpen && data) {
@@ -17,7 +17,7 @@ const Modal = ({ data, isOpen, setIsOpen }) => {
     isOpen && (
       <div onClick={() => setIsOpen(false)} className="modal">
         <div onClick={e => e.stopPropagation()} className="modal-content">
-          <UserDesc {...{ data, setIsOpen }} />
+          <UserDesc {...{ data, setIsOpen, uid }} />
           <div onClick={() => setIsOpen(false)} className="modal-close">
             <CloseIcon height="24px" width="24px" fillColor="white" />
           </div>

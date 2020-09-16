@@ -22,6 +22,34 @@ const fetchUserData = async (uid, userId) => {
   return data;
 };
 
+const fetchFollowers = async (uid, userId, limit) => {
+  const req = await axios.get(
+    "api/user/" + userId + "/followers?limit=" + limit,
+    {
+      headers: {
+        uid,
+      },
+    }
+  );
+  const data = await req.data;
+  console.log(data);
+  return data;
+};
+
+const fetchFollowing = async (uid, userId, limit) => {
+  const req = await axios.get(
+    "api/user/" + userId + "/following?limit=" + limit,
+    {
+      headers: {
+        uid,
+      },
+    }
+  );
+  const data = await req.data;
+  console.log(data);
+  return data;
+};
+
 const tryLogin = async (uid, login) => {
   const req = await axios.get("/api/login", {
     headers: {
@@ -46,4 +74,12 @@ const capitalize = text => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
-export default { fetchResults, fetchUserData, tryLogin, capitalize, logout };
+export default {
+  fetchResults,
+  fetchUserData,
+  fetchFollowers,
+  fetchFollowing,
+  tryLogin,
+  capitalize,
+  logout,
+};

@@ -40,8 +40,8 @@
   font-size: 16px;
 }
 
-.followers span,
-.following span {
+.followers span.bold,
+.following span.bold {
   font-weight: 600;
   color: #0e0e0e;
 }
