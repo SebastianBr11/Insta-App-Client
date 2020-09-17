@@ -32,6 +32,8 @@ function App() {
     uid
   );
 
+  const [isDarkModeActive, setIsDarkModeActive] = useState(false);
+
   useMultipleKeys(setFocus);
 
   useEffect(() => {
@@ -56,8 +58,17 @@ function App() {
     console.log("is logged in: " + isLoggedIn);
   };
 
+  useEffect(() => {
+    if (isDarkModeActive)
+      document.querySelector(":root").classList.add("dark-mode");
+    else document.querySelector(":root").classList.remove("dark-mode");
+  }, [isDarkModeActive]);
+
   return isLoggedIn ? (
     <div className="container">
+      <button onClick={() => setIsDarkModeActive(!isDarkModeActive)}>
+        Dark Mode
+      </button>
       <button className="logout-button" onClick={onLogout}>
         Logout
       </button>

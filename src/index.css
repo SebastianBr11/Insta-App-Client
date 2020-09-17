@@ -4,6 +4,14 @@
   padding: 0;
 }
 
+:root.dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+:root.dark-mode img {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 html,
 body,
 #root {
