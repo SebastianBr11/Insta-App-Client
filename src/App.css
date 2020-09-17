@@ -14,7 +14,7 @@
 
 .header {
   font-size: 1.9rem;
-  color: #333;
+  color: rgba(62, 80, 242, 0.7);
   display: flex;
   justify-content: center;
   padding: 20px 0;

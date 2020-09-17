@@ -63,14 +63,16 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
 
   const toggleFollowers = () => {
     setShowFollowers(!showFollowers);
-    if (!followersLoaded) {
+    if (data?.user && data?.user?.private) return;
+    if (!followersLoaded && followersNum !== "0") {
       setFollowersLoading(true);
     }
   };
 
   const toggleFollowing = () => {
     setShowFollowing(!showFollowing);
-    if (!followingLoaded) setFollowingLoading(true);
+    if (data?.user && data?.user?.private) return;
+    if (!followingLoaded && followingNum !== "0") setFollowingLoading(true);
   };
 
   useEffect(() => {
@@ -81,7 +83,9 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           setFollowersLoading(false);
           setFollowers(newFollowers);
         })
-        .catch(e => console.log(e));
+        .catch(e => {
+          console.log(e);
+        });
     }
   }, [
     followersLoading,
@@ -129,9 +133,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
             {followersNum !== "1" ? "followers" : "follower"}
           </span>
           {showFollowers &&
-            followers?.followers &&
             (!followersLoading ? (
-              <Followers followers={followers.followers} />
+              followers?.followers && (
+                <Followers followers={followers.followers} />
+              )
             ) : (
               <Spinner size="sm" />
             ))}
@@ -144,9 +149,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
             {followingNum !== "1" ? "users" : "user"}
           </span>
           {showFollowing &&
-            following?.following &&
             (!followingLoading ? (
-              <Followers followers={following.following} />
+              following?.following && (
+                <Followers followers={following.following} />
+              )
             ) : (
               <Spinner size="sm" />
             ))}
