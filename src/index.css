@@ -31,3 +31,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+a {
+  color: rgba(0, 70, 147, 0.7);
+}
+
+a:visited {
+  color: rgba(138, 30, 147, 0.7);
+}

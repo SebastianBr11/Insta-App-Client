@@ -1,13 +1,24 @@
 import React from "react";
 
+import "./Followers.css";
+
 const Followers = ({ followers }) => {
   return (
-    <div>
+    <div className="followers-container">
       {followers.map(f => (
-        <div key={f.href}>
-          <a href={f.href}>
-            <img alt={f.alt} src={f.imgSrc} />
-            {f.title} and {f.subtitle}
+        <div
+          data-title={f.title}
+          data-subtitle={f.subtitle}
+          className="follower-container"
+          key={f.href}
+        >
+          <a className="follower-link" href={f.href}>
+            <img
+              title={f.alt}
+              className="follower-img"
+              alt={f.alt}
+              src={f.imgSrc}
+            />
           </a>
         </div>
       ))}
