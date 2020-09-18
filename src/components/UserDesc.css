@@ -40,6 +40,26 @@
   font-size: 16px;
 }
 
+.followers,
+.following {
+  position: relative;
+}
+
+.followers > span,
+.following > span {
+  cursor: pointer;
+}
+
+.followers[data-show="true"] + .following,
+.following[data-show="true"] + .posts {
+  margin-top: 10px;
+}
+
+.followers span + .followers-container,
+.following span + .followers-container {
+  margin-top: 10px;
+}
+
 .followers span.bold,
 .following span.bold {
   font-weight: 600;
@@ -74,4 +94,14 @@
 
 .reload-button + .user-images {
   margin-top: 10px;
+}
+
+.badge {
+  border-radius: 50%;
+  background: rgba(250, 70, 250, 0.7);
+  padding: 2px 5px;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(5px);
 }

@@ -127,10 +127,16 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
       {desc && <h3 className="desc">{desc}</h3>}
       {link && <a href={link}>{linkText}</a>}
       {followersNum && (
-        <h4 className="followers">
-          <span className="bold">{followersNum}</span>{" "}
+        <h4
+          data-show={showFollowers && !!followers?.followers}
+          className="followers"
+        >
           <span onClick={toggleFollowers}>
+            <span className="bold">{followersNum}</span>{" "}
             {followersNum !== "1" ? "followers" : "follower"}
+            {!followersLoaded && !followersLoading && (
+              <span className="badge">load</span>
+            )}
           </span>
           {showFollowers &&
             (!followersLoading ? (
@@ -143,10 +149,16 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
         </h4>
       )}
       {followingNum && (
-        <h4 className="following">
-          following <span className="bold">{followingNum}</span>{" "}
+        <h4
+          data-show={showFollowing && !!following?.following}
+          className="following"
+        >
           <span onClick={toggleFollowing}>
+            following <span className="bold">{followingNum}</span>{" "}
             {followingNum !== "1" ? "users" : "user"}
+            {!followingLoaded && !followingLoading && (
+              <span className="badge">load</span>
+            )}
           </span>
           {showFollowing &&
             (!followingLoading ? (
