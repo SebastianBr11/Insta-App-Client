@@ -19,7 +19,7 @@ const Modal = ({ data, isOpen, setIsOpen, uid }) => {
         <div onClick={e => e.stopPropagation()} className="modal-content">
           <UserDesc {...{ data, setIsOpen, uid }} />
           <div onClick={() => setIsOpen(false)} className="modal-close">
-            <CloseIcon height="24px" width="24px" fillColor="white" />
+            <CloseIcon height="24px" width="24px" />
           </div>
         </div>
       </div>
