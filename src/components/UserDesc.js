@@ -134,9 +134,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           <span onClick={toggleFollowers}>
             <span className="bold">{followersNum}</span>{" "}
             {followersNum !== "1" ? "followers" : "follower"}
-            {!followersLoaded && !followersLoading && (
-              <span className="badge">load</span>
-            )}
+            {!followersLoaded &&
+              !followersLoading &&
+              !data?.user?.private &&
+              followersNum !== "0" && <span className="badge">load</span>}
           </span>
           {showFollowers &&
             (!followersLoading ? (
@@ -156,9 +157,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           <span onClick={toggleFollowing}>
             following <span className="bold">{followingNum}</span>{" "}
             {followingNum !== "1" ? "users" : "user"}
-            {!followingLoaded && !followingLoading && (
-              <span className="badge">load</span>
-            )}
+            {!followingLoaded &&
+              !followingLoading &&
+              !data?.user?.private &&
+              followingNum !== "0" && <span className="badge">load</span>}
           </span>
           {showFollowing &&
             (!followingLoading ? (
