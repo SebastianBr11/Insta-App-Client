@@ -178,7 +178,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
       {followersNum && (
         <h4
           data-show={showFollowers && !!followers?.followers}
-          data-loading={followersLoading}
+          data-loading={showFollowers && followersLoading}
           className="followers"
         >
           <span onClick={toggleFollowers}>
@@ -207,7 +207,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
       {followingNum && (
         <h4
           data-show={showFollowing && !!following?.following}
-          data-loading={followingLoading}
+          data-loading={showFollowing && followingLoading}
           className="following"
         >
           <span onClick={toggleFollowing}>
