@@ -72,11 +72,21 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
     }
   };
 
+  const loadMoreFollowers = () => {
+    setFollowersLoaded(false);
+    setFollowersLoading(true);
+  };
+
   const toggleFollowing = () => {
     setShowFollowing(!showFollowing);
     if (data?.user && data?.user?.private) return;
     if (!followingLoaded && followingNum !== "0" && !followingLoading)
       setFollowingLoading(true);
+  };
+
+  const loadMoreFollowing = () => {
+    setFollowingLoaded(false);
+    setFollowingLoading(true);
   };
 
   useEffect(() => {
@@ -86,11 +96,23 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
         cancelToken.current.cancel("Operation canceled due to new request.");
       }
       cancelToken.current = axios.CancelToken.source();
-      Util.fetchFollowers(uid, userId, 20, cancelToken.current)
+      Util.fetchFollowers(
+        uid,
+        userId,
+        20,
+        followers?.followers?.length ?? 0,
+        cancelToken.current
+      )
         .then(newFollowers => {
           setFollowersLoaded(!!newFollowers);
           setFollowersLoading(false);
-          setFollowers(newFollowers);
+          setFollowers({
+            id: followers?.id,
+            followers: [
+              ...(followers?.followers ?? []),
+              ...newFollowers?.followers,
+            ],
+          });
         })
         .catch(e => {
           console.log(e);
@@ -104,6 +126,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
     setFollowers,
     userId,
     uid,
+    followers?.followers?.length,
   ]);
 
   useEffect(() => {
@@ -113,7 +136,13 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
         cancelToken.current.cancel("Operation canceled due to new request.");
       }
       cancelToken.current = axios.CancelToken.source();
-      Util.fetchFollowing(uid, userId, 20, cancelToken.current)
+      Util.fetchFollowing(
+        uid,
+        userId,
+        20,
+        following?.following?.length ?? 0,
+        cancelToken.current
+      )
         .then(newFollowing => {
           if (!newFollowing) {
             setFollowingLoaded(false);
@@ -121,7 +150,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
             setFollowingLoaded(true);
           }
           setFollowingLoading(false);
-          setFollowing(newFollowing);
+          setFollowing({
+            id: following?.id,
+            following: [...following?.following, ...newFollowing?.following],
+          });
         })
         .catch(e => console.log(e));
     }
@@ -133,6 +165,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
     setFollowingLoading,
     uid,
     userId,
+    following?.following?.length,
   ]);
   return (
     <div className="user-desc">
@@ -156,7 +189,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           {showFollowers &&
             (!followersLoading ? (
               followers?.followers && (
-                <Followers followers={followers.followers} />
+                <>
+                  <Followers followers={followers.followers} />
+                  <button onClick={loadMoreFollowers}>load more</button>
+                </>
               )
             ) : (
               <Spinner size="sm" />
@@ -180,7 +216,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           {showFollowing &&
             (!followingLoading ? (
               following?.following && (
-                <Followers followers={following.following} />
+                <>
+                  <Followers followers={following.following} />
+                  <button onClick={loadMoreFollowing}>load more</button>
+                </>
               )
             ) : (
               <Spinner size="sm" />

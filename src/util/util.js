@@ -22,9 +22,10 @@ const fetchUserData = async (uid, userId) => {
   return data;
 };
 
-const fetchFollowers = async (uid, userId, limit, cancelToken) => {
+const fetchFollowers = async (uid, userId, limit, offset, cancelToken) => {
+  console.log(offset);
   const req = await axios.get(
-    "api/user/" + userId + "/followers?limit=" + limit,
+    "api/user/" + userId + "/followers?limit=" + limit + "&offset=" + offset,
     {
       headers: {
         uid,
@@ -37,9 +38,10 @@ const fetchFollowers = async (uid, userId, limit, cancelToken) => {
   return data;
 };
 
-const fetchFollowing = async (uid, userId, limit, cancelToken) => {
+const fetchFollowing = async (uid, userId, limit, offset, cancelToken) => {
+  console.log(offset);
   const req = await axios.get(
-    "api/user/" + userId + "/following?limit=" + limit,
+    "api/user/" + userId + "/following?limit=" + limit + "&offset=" + offset,
     {
       headers: {
         uid,
