@@ -194,7 +194,9 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
               followers?.followers && (
                 <>
                   <Followers followers={followers.followers} />
-                  <button onClick={loadMoreFollowers}>load more</button>
+                  <button className="load-more" onClick={loadMoreFollowers}>
+                    Load More
+                  </button>
                 </>
               )
             ) : (
@@ -221,7 +223,9 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
               following?.following && (
                 <>
                   <Followers followers={following.following} />
-                  <button onClick={loadMoreFollowing}>load more</button>
+                  <button className="load-more" onClick={loadMoreFollowing}>
+                    Load More
+                  </button>
                 </>
               )
             ) : (
