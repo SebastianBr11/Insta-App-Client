@@ -152,7 +152,10 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
           setFollowingLoading(false);
           setFollowing({
             id: following?.id,
-            following: [...following?.following, ...newFollowing?.following],
+            following: [
+              ...(following?.following ?? []),
+              ...newFollowing?.following,
+            ],
           });
         })
         .catch(e => console.log(e));
