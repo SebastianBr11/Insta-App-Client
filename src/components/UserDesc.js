@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Spinner from "./Spinner";
 import Util from "../util/util";
 import { usePersistedState } from "../util/hooks";
@@ -54,6 +55,8 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
     false
   );
 
+  const cancelToken = useRef(undefined);
+
   const onReloadClick = () => {
     data.setIsLoaded(false);
     data.setIsLoading(true);
@@ -64,7 +67,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
   const toggleFollowers = () => {
     setShowFollowers(!showFollowers);
     if (data?.user && data?.user?.private) return;
-    if (!followersLoaded && followersNum !== "0") {
+    if (!followersLoaded && followersNum !== "0" && !followersLoading) {
       setFollowersLoading(true);
     }
   };
@@ -72,12 +75,18 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
   const toggleFollowing = () => {
     setShowFollowing(!showFollowing);
     if (data?.user && data?.user?.private) return;
-    if (!followingLoaded && followingNum !== "0") setFollowingLoading(true);
+    if (!followingLoaded && followingNum !== "0" && !followingLoading)
+      setFollowingLoading(true);
   };
 
   useEffect(() => {
     if (followersLoading && !followersLoaded) {
-      Util.fetchFollowers(uid, userId, 20)
+      console.log(cancelToken);
+      if (typeof cancelToken.current != typeof undefined) {
+        cancelToken.current.cancel("Operation canceled due to new request.");
+      }
+      cancelToken.current = axios.CancelToken.source();
+      Util.fetchFollowers(uid, userId, 20, cancelToken.current)
         .then(newFollowers => {
           setFollowersLoaded(!!newFollowers);
           setFollowersLoading(false);
@@ -99,8 +108,12 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
 
   useEffect(() => {
     if (followingLoading && !followingLoaded) {
-      console.log("fetching again");
-      Util.fetchFollowing(uid, userId, 20)
+      console.log(cancelToken);
+      if (typeof cancelToken.current != typeof undefined) {
+        cancelToken.current.cancel("Operation canceled due to new request.");
+      }
+      cancelToken.current = axios.CancelToken.source();
+      Util.fetchFollowing(uid, userId, 20, cancelToken.current)
         .then(newFollowing => {
           if (!newFollowing) {
             setFollowingLoaded(false);
@@ -129,6 +142,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
       {followersNum && (
         <h4
           data-show={showFollowers && !!followers?.followers}
+          data-loading={followersLoading}
           className="followers"
         >
           <span onClick={toggleFollowers}>
@@ -152,6 +166,7 @@ const UserDesc = ({ data, setIsOpen, uid }) => {
       {followingNum && (
         <h4
           data-show={showFollowing && !!following?.following}
+          data-loading={followingLoading}
           className="following"
         >
           <span onClick={toggleFollowing}>

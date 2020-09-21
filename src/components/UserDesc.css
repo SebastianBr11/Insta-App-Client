@@ -43,6 +43,20 @@
 .followers,
 .following {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.followers span + div.spinner,
+.following span + div.spinner {
+  margin-top: 10px;
+}
+
+.followers[data-loading="true"] + .following,
+.following[data-loading="true"] + .posts {
+  margin-top: 10px;
 }
 
 .followers > span,
